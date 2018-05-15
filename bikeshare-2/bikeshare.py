@@ -84,18 +84,32 @@ def load_data(city, month, day):
 
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
-
+    months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-
+    # print(df.head())
     # display the most common month
-
+    popular_month = df['month'].value_counts()
+    # print("count",popular_month)
+    if popular_month.count() == 1:
+        print("\tThere is a filter on the month.\n\tTo find the most popular month run again and select 'all' months.")
+        print("\tThe month selected is: {}\n".format(months[popular_month.idxmax()].title()))
+    else:
+        print("\tThe most popular month is: {}\n".format(months[popular_month.idxmax()].title()))
 
     # display the most common day of week
-
+    popular_day = df['day_of_week'].value_counts()
+    # print("counts", popular_day)
+    if popular_day.count() == 1:
+        print("\tThere is a filter on the day.\n\tTo find the most popular day run again and select 'all' days.")
+        print("\tThe day selected is: {}\n".format(popular_day.idxmax()))
+    else:
+        print("\tThe most popular day is: {}\n".format(popular_day.idxmax()))
 
     # display the most common start hour
-
+    popular_start_hour = df['Start Time'].dt.hour.value_counts()
+    # print("hour",popular_start_hour)
+    print("\tThe most popular start hour is: {}".format(popular_start_hour.idxmax()))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)

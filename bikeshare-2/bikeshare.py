@@ -84,13 +84,13 @@ def load_data(city, month, day):
 
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
-    months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
+
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
-    # print(df.head())
+
     # display the most common month
     popular_month = df['month'].value_counts()
-    # print("count",popular_month)
+    months = ['all', 'january', 'february', 'march', 'april', 'may', 'june']
     if popular_month.count() == 1:
         print("\tThere is a filter on the month.\n\tTo find the most popular month run again and select 'all' months.")
         print("\tThe month selected is: {}\n".format(months[popular_month.idxmax()].title()))
@@ -99,7 +99,6 @@ def time_stats(df):
 
     # display the most common day of week
     popular_day = df['day_of_week'].value_counts()
-    # print("counts", popular_day)
     if popular_day.count() == 1:
         print("\tThere is a filter on the day.\n\tTo find the most popular day run again and select 'all' days.")
         print("\tThe day selected is: {}\n".format(popular_day.idxmax()))
@@ -108,7 +107,6 @@ def time_stats(df):
 
     # display the most common start hour
     popular_start_hour = df['Start Time'].dt.hour.value_counts()
-    # print("hour",popular_start_hour)
     print("\tThe most popular start hour is: {}".format(popular_start_hour.idxmax()))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
@@ -122,13 +120,15 @@ def station_stats(df):
     start_time = time.time()
 
     # display most commonly used start station
-
-
+    # print(df.head())
+    print("\tThe most popular start station is: {}\n".format(df['Start Station'].value_counts().idxmax()))
     # display most commonly used end station
-
+    print("\tThe most popular end station is: {}\n".format(df['End Station'].value_counts().idxmax()))
 
     # display most frequent combination of start station and end station trip
-
+    popular_station_comb = df[['Start Station', 'End Station']].mode()
+    print("\tThe most popular station combination is: {} and {}\n".format(popular_station_comb['Start Station'].iloc[0],
+                                                                          popular_station_comb['End Station'].iloc[0]))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -141,10 +141,10 @@ def trip_duration_stats(df):
     start_time = time.time()
 
     # display total travel time
-
+    print("\tThe total travel time is: {}".format(df['Trip Duration'].sum()))
 
     # display mean travel time
-
+    print("\tThe mean travel time is: {}".format(df['Trip Duration'].mean()))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -157,13 +157,22 @@ def user_stats(df):
     start_time = time.time()
 
     # Display counts of user types
-
+    print("These are the counts of each user type:\n{}".format(df['User Type'].value_counts()))
 
     # Display counts of gender
-
+    try:
+        print("\nThese are the counts of each user's gender:\n{}".format(df['Gender'].value_counts()))
+    except:
+        print("\nThe data set for the city you have selected does not have Gender data.")
 
     # Display earliest, most recent, and most common year of birth
-
+    try:
+        year = df['Birth Year']
+        print("\nThe earliest birth year is: {}".format(year.min()))
+        print("\nThe most recent birth year is: {}".format(year.max()))
+        print("\nThe most common birth year is: {}".format(year.value_counts().idxmax()))
+    except:
+        print("\nThe data set for the city you have selected does not have Birth Year data.")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
